@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
-import { CtaLink, Eyebrow, NetworkPattern, Rise } from '@/components/site/primitives'
+import { CtaLink, Eyebrow, InsightMotif, Rise } from '@/components/site/primitives'
 
 const links = [
   { href: '/services', label: 'Our services' },
@@ -11,7 +11,7 @@ const links = [
 export default function NotFound() {
   return (
     <section className="page-hero notfound has-pattern pattern-light">
-      <NetworkPattern id="notfound" />
+      <InsightMotif kind="trend" />
       <div className="wrap flex min-h-[60vh] max-w-3xl flex-col items-start justify-center gap-6">
         <Eyebrow>Error 404</Eyebrow>
         <h1>

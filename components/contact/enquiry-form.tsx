@@ -14,7 +14,7 @@ const types = [
   { value: 'partnership', label: 'Partnership' },
 ]
 
-const inputCls =
+export const inputCls =
   'h-12 w-full rounded-xl border border-input bg-white px-4 text-ink transition-[border-color,box-shadow] placeholder:text-muted-foreground/70 hover:border-navy/40 focus-visible:border-navy focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/10 aria-invalid:border-destructive'
 
 export function EnquiryForm({ defaultService }: { defaultService?: string }) {
@@ -184,7 +184,7 @@ export function EnquiryForm({ defaultService }: { defaultService?: string }) {
   )
 }
 
-function Field({
+export function Field({
   id,
   label,
   error,

@@ -115,7 +115,7 @@ export function PageHero({
 }) {
   return (
     <section className="page-hero has-pattern pattern-light">
-      <NetworkPattern id="page-hero" />
+      <InsightMotif kind="trend" />
       <div className="wrap flex flex-col gap-6">
         <Breadcrumbs items={crumbs} />
         <Eyebrow>{eyebrow}</Eyebrow>
@@ -176,8 +176,9 @@ export function CtaBand({
   return (
     <section className="bg-background py-16 md:py-24">
       <div className="wrap">
-        <div className="cta-card reveal-scale has-pattern px-7 py-12 md:px-16 md:py-20">
-          <NetworkPattern id="cta" />
+        <div className="cta-card spotlight reveal-scale has-pattern px-7 py-12 md:px-16 md:py-20">
+          <span className="spot" aria-hidden="true" />
+          <InsightMotif kind="bars" />
           <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr] lg:items-end">
             <div className="flex max-w-2xl flex-col gap-4">
               <Eyebrow inverted>Start a project</Eyebrow>
@@ -211,43 +212,71 @@ export function CtaBand({
 }
 
 /**
- * A faint street grid with dotted data routes that flow, nodes that ping and packets travelling the routes.
+ * A formal, report-style graphic that draws itself once when it comes into view and then stays still: faint chart
+ * gridlines and a year axis, plus
+ *  - `trend`: a line chart rising through the years, with its data points,
+ *  - `bars`: bars that rise one after another under a trend line (measurable growth),
  * Light-on-dark by default; put `pattern-light` on the host for navy-on-white. Decorative only.
  */
-export function NetworkPattern({ id }: { id: string }) {
-  const r1 = `${id}-r1`
-  const r2 = `${id}-r2`
-  const r3 = `${id}-r3`
+const YEARS = ['2017', '2019', '2021', '2023', '2025']
+const TREND = [
+  [600, 560],
+  [700, 520],
+  [800, 530],
+  [900, 450],
+  [1000, 400],
+  [1100, 300],
+  [1170, 230],
+]
+const BARS = [130, 175, 210, 265, 330, 410]
+
+export function InsightMotif({ kind = 'trend', className }: { kind?: 'trend' | 'bars'; className?: string }) {
+  const step = (i: number) => ({ '--i': i }) as React.CSSProperties
   return (
-    <svg className="pattern" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
-      <g className="streets">
-        <path d="M0 120H1200M0 360H1200M0 600H1200M180 0V700M520 0V700M860 0V700M1080 0V700M0 520 700 0M600 700 1200 250" />
+    <svg
+      className={cn('pattern motif', `motif-${kind}`, className)}
+      viewBox="540 120 670 590"
+      preserveAspectRatio="xMidYMax meet"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <g className="grid">
+        {[160, 280, 400, 520].map((y) => (
+          <path key={y} d={`M560 ${y}H1190`} />
+        ))}
+        <path className="base" d="M560 640H1190" />
       </g>
-      <path id={r1} className="route" d="M180 700V360H520V120H860V0" />
-      <path id={r2} className="route" d="M1200 600H1080V360H860V120" />
-      <path id={r3} className="route" d="M0 120H180V360" />
-      <circle className="node" cx="520" cy="360" r="5" />
-      <circle className="node" cx="860" cy="120" r="6" />
-      <circle className="node" cx="1080" cy="360" r="5" />
-      <circle className="node" cx="180" cy="360" r="5" />
-      <circle className="ping" cx="860" cy="120" r="10" />
-      <circle className="ping late" cx="1080" cy="360" r="10" />
-      <circle className="ping" cx="180" cy="360" r="10" />
-      <circle className="packet motion-only" r="5">
-        <animateMotion dur="9s" repeatCount="indefinite" rotate="auto">
-          <mpath href={`#${r1}`} />
-        </animateMotion>
-      </circle>
-      <circle className="packet motion-only" r="4">
-        <animateMotion dur="7s" begin="-3s" repeatCount="indefinite">
-          <mpath href={`#${r2}`} />
-        </animateMotion>
-      </circle>
-      <circle className="packet motion-only" r="4">
-        <animateMotion dur="5s" begin="-1s" repeatCount="indefinite">
-          <mpath href={`#${r3}`} />
-        </animateMotion>
-      </circle>
+
+      <g className="axis">
+          {YEARS.map((year, i) => (
+            <text key={year} x={600 + i * 142} y={676} style={step(i)}>
+              {year}
+            </text>
+          ))}
+        </g>
+
+      {kind === 'bars' && (
+        <>
+          {BARS.map((h, i) => (
+            <rect key={h} className="bar" x={598 + i * 100} y={640 - h} width={48} height={h} rx={6} style={step(i)} />
+          ))}
+          <path className="line" pathLength={1} d={BARS.map((h, i) => `${i ? 'L' : 'M'}${622 + i * 100} ${640 - h - 26}`).join('')} />
+          {BARS.map((h, i) => (
+            <circle key={h} className="point" cx={622 + i * 100} cy={640 - h - 26} r={6} style={step(i + 4)} />
+          ))}
+        </>
+      )}
+
+      {kind === 'trend' && (
+        <>
+          <path className="area" d={`M600 640${TREND.map(([x, y]) => `L${x} ${y}`).join('')}L1170 640Z`} />
+          <path className="line" pathLength={1} d={TREND.map(([x, y], i) => `${i ? 'L' : 'M'}${x} ${y}`).join('')} />
+          {TREND.map(([x, y], i) => (
+            <circle key={x} className={i === TREND.length - 1 ? 'point last' : 'point'} cx={x} cy={y} r={i === TREND.length - 1 ? 8 : 5.5} style={step(i)} />
+          ))}
+        </>
+      )}
+
     </svg>
   )
 }

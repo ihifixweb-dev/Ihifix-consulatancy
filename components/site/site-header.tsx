@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { ArrowRight, Menu, MessageCircle, Phone, X } from 'lucide-react'
 import { contact, navItems } from '@/lib/content'
 import { Logo } from './primitives'
@@ -12,6 +12,21 @@ export function SiteHeader() {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const navRef = useRef<HTMLUListElement>(null)
+  // A soft pill glides to whichever link is hovered and settles back on the current page.
+  const [glide, setGlide] = useState<{ x: number; w: number; on: boolean }>({ x: 0, w: 0, on: false })
+  const glideTo = useCallback((el: Element | null | undefined) => {
+    if (!(el instanceof HTMLElement)) return setGlide((g) => ({ ...g, on: false }))
+    setGlide({ x: el.offsetLeft, w: el.offsetWidth, on: true })
+  }, [])
+  const glideHome = useCallback(() => glideTo(navRef.current?.querySelector('[aria-current="page"]')), [glideTo])
+
+  useEffect(() => {
+    glideHome()
+    addEventListener('resize', glideHome)
+    document.fonts?.ready.then(glideHome)
+    return () => removeEventListener('resize', glideHome)
+  }, [pathname, glideHome])
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12)
@@ -40,12 +55,24 @@ export function SiteHeader() {
             </Link>
 
             <nav aria-label="Primary" className="ml-4 hidden lg:block">
-              <ul className="flex items-center gap-1">
+              <ul ref={navRef} className="relative flex items-center gap-1" onMouseLeave={glideHome}>
+                <span
+                  aria-hidden="true"
+                  className="nav-glide"
+                  style={{ '--x': `${glide.x}px`, '--w': `${glide.w}px`, opacity: glide.on ? 1 : 0 } as React.CSSProperties}
+                />
                 {navItems.map((item) => {
                   const active = item.href === '/' ? pathname === '/' : pathname.startsWith(item.href)
                   return (
                     <li key={item.href}>
-                      <Link href={item.href} aria-current={active ? 'page' : undefined} className="nav-pill">
+                      <Link
+                        href={item.href}
+                        aria-current={active ? 'page' : undefined}
+                        className="nav-pill"
+                        onMouseEnter={(e) => glideTo(e.currentTarget)}
+                        onFocus={(e) => glideTo(e.currentTarget)}
+                        onBlur={glideHome}
+                      >
                         {item.label}
                       </Link>
                     </li>

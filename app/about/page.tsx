@@ -158,7 +158,7 @@ export default function AboutPage() {
                 We grow talent through the Ihifix Digital Academy and hire for meaningful, high-impact projects.
               </p>
             </div>
-            <CtaLink href="/contact?request=careers" variant="light" arrow className="shrink-0">
+            <CtaLink href="/careers" variant="light" arrow className="shrink-0">
               Send us your CV
             </CtaLink>
           </div>

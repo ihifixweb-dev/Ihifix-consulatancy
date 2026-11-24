@@ -15,20 +15,14 @@ const company = [
   { label: 'About', href: '/about' },
   { label: 'Case studies', href: '/work' },
   { label: 'How we work', href: '/how-we-work' },
+  { label: 'Careers', href: '/careers' },
   { label: 'Solutions', href: '/solutions' },
   { label: 'Contact', href: '/contact' },
 ]
 
 export function SiteFooter() {
   return (
-    <footer className="band-night pb-24 lg:pb-0">
-      <div className="data-strip" aria-hidden="true">
-        <span className="lane l1" />
-        <span className="lane l2" />
-        <span className="pulse p1" />
-        <span className="pulse p2" />
-        <span className="pulse p3" />
-      </div>
+    <footer className="site-footer band-night pb-24 lg:pb-0">
 
       <div className="wrap">
         <div className="grid gap-8 py-16 md:grid-cols-[1fr_auto] md:items-end md:py-20">
@@ -104,7 +98,7 @@ export function SiteFooter() {
           <ul className="flex flex-wrap gap-x-6 gap-y-2">
             {group.map((g) => (
               <li key={g.label}>
-                <a href={g.href} className="inline-flex items-center gap-1 transition-colors hover:text-white">
+                <a href={g.href} className="inline-flex items-center gap-1 hover:text-white">
                   {g.label}
                   <ArrowUpRight aria-hidden="true" className="size-3.5" />
                 </a>
@@ -146,7 +140,7 @@ function ContactItem({
 }) {
   const body = (
     <>
-      <span className="grid size-10 shrink-0 place-items-center rounded-full bg-white/[0.07] text-white transition-colors group-hover:bg-primary">
+      <span className="grid size-10 shrink-0 place-items-center rounded-full bg-white/[0.07] text-white group-hover:bg-primary">
         <Icon aria-hidden="true" className="size-4" />
       </span>
       <span className="flex flex-col">

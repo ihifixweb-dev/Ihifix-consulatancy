@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Image from 'next/image'
 import { FileCheck2, KeyRound, Lock, ShieldCheck } from 'lucide-react'
 import { process } from '@/lib/content'
-import { CtaBand, Eyebrow, NetworkPattern, PageHero, Rise } from '@/components/site/primitives'
+import { CtaBand, Eyebrow, PageHero, Rise } from '@/components/site/primitives'
 
 export const metadata: Metadata = {
   title: 'How We Work',
@@ -41,11 +41,11 @@ export default function HowWeWorkPage() {
               <Rise text="Five stages, clear touchpoints" />
             </h2>
           </div>
-          <ol className="flex flex-col gap-3">
+          <ol className="timeline timeline-col flex flex-col gap-3" data-timeline>
             {process.map((p, i) => (
-              <li key={p.name} style={{ '--i': i } as React.CSSProperties} className="reveal">
+              <li key={p.name} data-step>
                 <div className="group grid gap-4 rounded-3xl bg-panel p-6 transition-colors hover:bg-[var(--panel-2)] md:grid-cols-12 md:items-center md:p-8">
-                  <span className="grid size-12 place-items-center rounded-full bg-navy text-sm font-bold text-white transition-colors group-hover:bg-primary md:col-span-1">
+                  <span className="step-dot grid size-12 place-items-center rounded-full bg-navy text-sm font-bold text-white transition-colors group-hover:bg-primary md:col-span-1">
                     0{i + 1}
                   </span>
                   <h3 className="text-2xl font-semibold tracking-[-0.02em] text-ink md:col-span-3">{p.name}</h3>
@@ -68,7 +68,7 @@ export default function HowWeWorkPage() {
             <h2 className="h2">
               <Rise text="Choose how we work together" />
             </h2>
-            <div className="reveal-scale relative mt-2 aspect-[3/2] overflow-hidden rounded-[2rem]">
+            <div className="reveal-scale relative mt-2 aspect-[3/2] overflow-hidden rounded-[2rem]" data-parallax="0.1">
               <Image
                 src="/images/academy-graduates.jpg"
                 alt="Ihifix Digital Academy participants holding their workbooks in a group photo"
@@ -95,7 +95,6 @@ export default function HowWeWorkPage() {
       </section>
 
       <section className="band-navy has-pattern section">
-        <NetworkPattern id="practices" />
         <div className="wrap flex flex-col gap-12">
           <div className="flex max-w-2xl flex-col gap-4">
             <Eyebrow inverted>Quality, security &amp; data protection</Eyebrow>

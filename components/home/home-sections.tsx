@@ -3,17 +3,16 @@ import Link from 'next/link'
 import { ArrowRight, BadgeCheck, Layers, Quote, ShieldCheck } from 'lucide-react'
 import { caseStudies, industries, partners, process, services, stats, trustedBy, type PartnerLogo } from '@/lib/content'
 import { CaseCard, ServiceCard } from '@/components/site/cards'
-import { CtaLink, Eyebrow, NetworkPattern, Rise, SectionHeading } from '@/components/site/primitives'
+import { CtaLink, Eyebrow, Rise, SectionHeading } from '@/components/site/primitives'
 
 const stagger = (i: number) => ({ '--i': i }) as React.CSSProperties
 
 export function Hero() {
   return (
     <section className="hero has-pattern">
-      <div className="hero-bg" aria-hidden="true">
+      <div className="hero-bg" aria-hidden="true" data-parallax="0.18">
         <Image src="/images/hero-team.png" alt="" fill priority sizes="100vw" />
       </div>
-      <NetworkPattern id="hero" />
       <div className="wrap">
         <div className="flex max-w-3xl flex-col items-start">
           <p className="hero-kicker mb-6">Ihifix Technologies &middot; Since 2017</p>
@@ -55,9 +54,13 @@ function splitStat(value: string) {
   return match ? { n: Number(match[1]), suffix: match[2] } : null
 }
 
-function LogoTile({ logo, hidden = false }: { logo: PartnerLogo; hidden?: boolean }) {
+function LogoTile({ logo, hidden = false, i = 0 }: { logo: PartnerLogo; hidden?: boolean; i?: number }) {
   return (
-    <li className={hidden ? 'marquee-item dup' : 'marquee-item'} aria-hidden={hidden || undefined}>
+    <li
+      className={hidden ? 'marquee-item dup' : 'marquee-item'}
+      aria-hidden={hidden || undefined}
+      style={{ '--i': i } as React.CSSProperties}
+    >
       <div className="logo-tile" title={logo.name}>
         <Image
           src={logo.src}
@@ -99,13 +102,13 @@ export function ProofStrip() {
           <p className="reveal text-center text-[0.8125rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
             Trusted by development partners, foundations and government
           </p>
-          <div className="marquee reveal w-full">
+          <div className="marquee w-full">
             <ul className="marquee-track">
-              {trustedBy.map((logo) => (
-                <LogoTile key={logo.name} logo={logo} />
+              {trustedBy.map((logo, i) => (
+                <LogoTile key={logo.name} logo={logo} i={i} />
               ))}
-              {trustedBy.map((logo) => (
-                <LogoTile key={`dup-${logo.name}`} logo={logo} hidden />
+              {trustedBy.map((logo, i) => (
+                <LogoTile key={`dup-${logo.name}`} logo={logo} hidden i={trustedBy.length + i} />
               ))}
             </ul>
           </div>
@@ -184,14 +187,13 @@ const reasons = [
 export function WhyIhifix() {
   return (
     <section className="band-navy has-pattern section">
-      <NetworkPattern id="why" />
       <div className="wrap grid gap-12 lg:grid-cols-12 lg:gap-16">
         <div className="flex flex-col gap-6 lg:col-span-5">
           <Eyebrow inverted>Why Ihifix</Eyebrow>
           <h2 className="h2 text-white">
             <Rise text="A partner that has done this in the field, not just on slides." />
           </h2>
-          <div className="reveal-scale relative mt-4 aspect-[4/3] overflow-hidden rounded-[2rem] ring-1 ring-white/10">
+          <div className="reveal-scale relative mt-4 aspect-[4/3] overflow-hidden rounded-[2rem] ring-1 ring-white/10" data-parallax="0.1">
             <Image
               src="/images/academy-training.jpg"
               alt="An Ihifix Digital Academy trainer leading a session on search marketing"
@@ -265,14 +267,10 @@ export function ProcessTeaser() {
           lead="Every stage ends with an artefact you can share with boards, funders and auditors."
           link={{ href: '/how-we-work', label: 'Our process' }}
         />
-        <ol className="relative grid gap-4 md:grid-cols-5">
+        <ol className="timeline timeline-row relative grid gap-4 md:grid-cols-5" data-timeline>
           {process.map((p, i) => (
-            <li
-              key={p.name}
-              className="reveal relative flex gap-5 rounded-3xl bg-white p-6 md:flex-col md:gap-4"
-              style={stagger(i)}
-            >
-              <span className="grid size-11 shrink-0 place-items-center rounded-full bg-navy text-sm font-bold text-white">
+            <li key={p.name} className="lift relative flex gap-5 rounded-3xl bg-white p-6 md:flex-col md:gap-4" data-step>
+              <span className="step-dot grid size-11 shrink-0 place-items-center rounded-full bg-navy text-sm font-bold text-white">
                 {i + 1}
               </span>
               <div className="flex flex-col gap-2">

@@ -46,7 +46,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
             </div>
           </dl>
           <div className="flex flex-col gap-14 lg:col-span-8">
-            <div className="reveal-scale relative aspect-[16/9] overflow-hidden rounded-[2rem] bg-muted">
+            <div className="reveal-scale relative aspect-[16/9] overflow-hidden rounded-[2rem] bg-muted" data-parallax="0.08">
               <Image src={study.image || '/placeholder.svg'} alt="" fill sizes="(min-width: 1024px) 60vw, 100vw" className="object-cover" />
             </div>
             <Block title="The challenge">{study.challenge}</Block>

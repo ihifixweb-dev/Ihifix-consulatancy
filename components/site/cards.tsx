@@ -41,7 +41,7 @@ export function ServiceCard({ service }: { service: Service }) {
 export function CaseCard({ study }: { study: CaseStudy }) {
   return (
     <Link href={`/work/${study.slug}`} className="group flex h-full flex-col gap-5">
-      <div className="relative aspect-[16/11] overflow-hidden rounded-3xl bg-muted">
+      <div className="case-media relative aspect-[16/11] overflow-hidden rounded-3xl bg-muted">
         <Image
           src={study.image || '/placeholder.svg'}
           alt=""
