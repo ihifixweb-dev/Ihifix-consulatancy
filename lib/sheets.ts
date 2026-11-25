@@ -33,9 +33,24 @@ export async function saveToSheet(form: SheetForm, fields: Record<string, string
       redirect: 'follow', // Apps Script answers through a redirect to googleusercontent.com
       signal: AbortSignal.timeout(25_000),
     })
-    const result = (await res.json().catch(() => null)) as { ok?: boolean; error?: string } | null
+    const text = await res.text()
+    let result: { ok?: boolean; error?: string } | null = null
+    try {
+      result = JSON.parse(text)
+    } catch {
+      // Google answers with an HTML page when the script is not deployed properly; log its message.
+      const page = text
+        .replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/g, ' ')
+        .replace(/<[^>]+>/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim()
+        .slice(0, 200)
+      console.error(`[sheets] The sheet returned a page instead of a reply (HTTP ${res.status}): "${page}"`)
+      return { ok: false, reason: 'failed' }
+    }
     if (!res.ok || !result?.ok) {
-      console.error('[sheets] Sheet rejected the submission', res.status, result?.error)
+      const hint = result?.error === 'unauthorised' ? ' (the secret in Code.gs does not match SHEETS_WEBHOOK_SECRET)' : ''
+      console.error(`[sheets] The sheet refused the submission (HTTP ${res.status}): ${result?.error ?? 'no reason given'}${hint}`)
       return { ok: false, reason: 'failed' }
     }
     return { ok: true }
