@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
+import { ArrowUpRight } from 'lucide-react'
+import { groupSites } from '@/lib/content'
 import { TripleHelix } from '@/components/about/triple-helix'
 import { CtaBand, CtaLink, Eyebrow, PageHero, Rise } from '@/components/site/primitives'
 
@@ -9,9 +11,19 @@ export const metadata: Metadata = {
 }
 
 const helix = [
-  { name: 'Consultancy', body: 'Ihifix Technologies develops digital solutions and technology advisory.', current: true },
-  { name: 'Education', body: 'Ihifix Digital Academy and International School build talent.', current: false },
-  { name: 'Foundation', body: 'Ihifix Innovation Foundation expands access in underserved communities.', current: false },
+  { name: 'Consultancy', body: 'Ihifix Technologies develops digital solutions and technology advisory.', current: true, links: [] },
+  {
+    name: 'Education',
+    body: 'Ihifix Digital Academy and International School build talent.',
+    current: false,
+    links: [groupSites.academy, groupSites.school],
+  },
+  {
+    name: 'Foundation',
+    body: 'Ihifix Innovation Foundation expands access in underserved communities.',
+    current: false,
+    links: [groupSites.foundation],
+  },
 ]
 
 const values = ['Innovation', 'Integrity', 'Excellence', 'Impact', 'Inclusion', 'Optimism']
@@ -73,6 +85,23 @@ export default function AboutPage() {
                     )}
                   </h3>
                   <p className={`text-sm leading-relaxed ${h.current ? 'text-white/75' : 'text-muted-foreground'}`}>{h.body}</p>
+                  {h.links.length > 0 && (
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {h.links.map((l) => (
+                        <a
+                          key={l.href}
+                          href={l.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 rounded-full bg-white px-3.5 py-1.5 text-sm font-semibold text-navy ring-1 ring-border transition-colors hover:bg-navy hover:text-white"
+                        >
+                          {l.label.replace('Ihifix ', '')}
+                          <ArrowUpRight aria-hidden="true" className="size-3.5" />
+                          <span className="sr-only"> (opens {l.label} website)</span>
+                        </a>
+                      ))}
+                    </div>
+                  )}
                 </li>
               ))}
             </ul>

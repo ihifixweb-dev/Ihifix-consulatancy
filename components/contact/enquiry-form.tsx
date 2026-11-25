@@ -1,6 +1,6 @@
 'use client'
 
-import { useActionState, useState } from 'react'
+import { startTransition, useActionState, useState } from 'react'
 import { ArrowRight, CheckCircle2 } from 'lucide-react'
 import { services } from '@/lib/content'
 import { submitEnquiry, type EnquiryState } from '@/app/contact/actions'
@@ -36,7 +36,16 @@ export function EnquiryForm({ defaultService }: { defaultService?: string }) {
   const err = state.errors ?? {}
 
   return (
-    <form action={action} noValidate className="flex flex-col gap-8">
+    <form
+      noValidate
+      className="flex flex-col gap-8"
+      // Submitted by hand (not via the form `action` prop) so React does not clear the fields when there is an error.
+      onSubmit={(e) => {
+        e.preventDefault()
+        const data = new FormData(e.currentTarget)
+        startTransition(() => action(data))
+      }}
+    >
       {state.status === 'error' && (
         <p role="alert" className="rounded-2xl border border-destructive/30 bg-destructive/5 p-4 text-sm font-medium text-destructive">
           {state.message}
@@ -148,7 +157,7 @@ export function EnquiryForm({ defaultService }: { defaultService?: string }) {
         />
       </Field>
 
-      <Field id="attachment" label="Attach a brief or ToR (PDF, DOCX, up to 10 MB)" error={err.attachment}>
+      <Field id="attachment" label="Attach a brief or ToR (PDF, DOCX, up to 4 MB)" error={err.attachment}>
         <input
           id="attachment"
           name="attachment"

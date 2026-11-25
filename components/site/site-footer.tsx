@@ -1,15 +1,10 @@
 import Link from 'next/link'
 import { ArrowUpRight, Mail, MapPin, MessageCircle, Phone } from 'lucide-react'
-import { contact, services } from '@/lib/content'
+import { contact, groupSites, services } from '@/lib/content'
 import { Logo } from './primitives'
 import { NewsletterForm } from './newsletter-form'
 
-const group = [
-  { label: 'Ihifix Group', href: 'https://ihifix.com' },
-  { label: 'Ihifix Digital Academy', href: 'https://ihifix.com' },
-  { label: 'Ihifix International School', href: 'https://ihifix.com' },
-  { label: 'Ihifix Innovation Foundation', href: 'https://ihifix.com' },
-]
+const group = [groupSites.group, groupSites.academy, groupSites.school, groupSites.foundation]
 
 const company = [
   { label: 'About', href: '/about' },
@@ -98,7 +93,7 @@ export function SiteFooter() {
           <ul className="flex flex-wrap gap-x-6 gap-y-2">
             {group.map((g) => (
               <li key={g.label}>
-                <a href={g.href} className="inline-flex items-center gap-1 hover:text-white">
+                <a href={g.href} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 hover:text-white">
                   {g.label}
                   <ArrowUpRight aria-hidden="true" className="size-3.5" />
                 </a>

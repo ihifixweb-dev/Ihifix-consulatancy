@@ -1,8 +1,9 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import { Download } from 'lucide-react'
-import { caseStudies, partners } from '@/lib/content'
+import { caseStudies, partners, projects } from '@/lib/content'
 import { CaseFilter } from '@/components/work/case-filter'
+import { ProjectGallery } from '@/components/work/project-gallery'
 import { CtaBand, CtaLink, Eyebrow, PageHero, Rise } from '@/components/site/primitives'
 
 export const metadata: Metadata = {
@@ -27,6 +28,21 @@ export default function WorkPage() {
       <section className="bg-background pb-20 pt-4 md:pb-28">
         <div className="wrap">
           <CaseFilter studies={caseStudies} />
+        </div>
+      </section>
+
+      <section id="projects" className="section border-t border-border bg-background">
+        <div className="wrap flex flex-col gap-12">
+          <div className="flex flex-col gap-4">
+            <Eyebrow>Websites &amp; applications</Eyebrow>
+            <h2 className="h2">
+              <Rise text="Selected digital projects" />
+            </h2>
+            <p className="lead max-w-2xl">
+              Websites, WordPress builds and applications designed and delivered by the Ihifix consultancy team.
+            </p>
+          </div>
+          <ProjectGallery projects={projects} />
         </div>
       </section>
 

@@ -38,9 +38,9 @@ export const metadata: Metadata = {
   },
   generator: 'v0.app',
   icons: {
+    // One mark for light and dark tabs: navy square, red ring, white ring, navy centre.
     icon: [
-      { url: '/icon-light-32x32.png', media: '(prefers-color-scheme: light)' },
-      { url: '/icon-dark-32x32.png', media: '(prefers-color-scheme: dark)' },
+      { url: '/favicon.ico', sizes: '32x32 48x48' },
       { url: '/icon.svg', type: 'image/svg+xml' },
     ],
     apple: '/apple-icon.png',

@@ -401,3 +401,98 @@ export const contact = {
   whatsapp: 'https://wa.me/2349161311555',
   address: 'No. 2 Ahman Pategi, off Alkali Road, Kaduna',
 }
+
+/** Ihifix Group's other arms, linked from the footer, the About page Triple Helix and the home page. */
+export const groupSites = {
+  group: { label: 'Ihifix Group', href: 'https://ihifix.com/' },
+  academy: { label: 'Ihifix Digital Academy', href: 'https://academy.ihifix.com/' },
+  school: { label: 'Ihifix International School', href: 'https://ihifix.sch.ng/' },
+  foundation: { label: 'Ihifix Innovation Foundation', href: 'https://foundation.ihifix.com/' },
+}
+
+export type ProjectKind = 'website' | 'application' | 'wordpress'
+
+/** Websites and applications the consultancy team has designed and delivered (Work page gallery). */
+export type Project = { name: string; url: string; host: string; kind: ProjectKind; image: string; summary: string }
+
+export const projectKinds: { value: ProjectKind | 'all'; label: string }[] = [
+  { value: 'all', label: 'All projects' },
+  { value: 'website', label: 'Websites' },
+  { value: 'application', label: 'Applications' },
+  { value: 'wordpress', label: 'WordPress' },
+]
+
+export const projects: Project[] = [
+  {
+    name: 'Ubefu',
+    url: 'https://ubefu.com/',
+    host: 'ubefu.com',
+    kind: 'application',
+    image: '/images/projects/ubefu.jpg',
+    summary: 'An AI-powered school management system that runs admissions, attendance, fees, academics and parent communication from one place.',
+  },
+  {
+    name: 'Iraja',
+    url: 'https://iraja.com/',
+    host: 'iraja.com',
+    kind: 'application',
+    image: '/images/projects/iraja.jpg',
+    summary: 'A purpose-built web application with a clear, accessible experience designed for everyday users.',
+  },
+  {
+    name: 'Ihifix Digital Academy',
+    url: 'https://academy.ihifix.com/',
+    host: 'academy.ihifix.com',
+    kind: 'application',
+    image: '/images/projects/academy.jpg',
+    summary: 'A learning and teaching platform for practical technology training, scholarships and career development.',
+  },
+  {
+    name: 'Ihifix International School',
+    url: 'https://ihifix.sch.ng/',
+    host: 'ihifix.sch.ng',
+    kind: 'website',
+    image: '/images/projects/school.jpg',
+    summary: 'The website of a STEM-first British Curriculum school in Kaduna, covering admissions, academics and school life.',
+  },
+  {
+    name: 'Ihifix Group',
+    url: 'https://ihifix.com/',
+    host: 'ihifix.com',
+    kind: 'website',
+    image: '/images/projects/group.jpg',
+    summary: 'The group website for Ihifix, presenting its work in technology, education and community impact across Africa.',
+  },
+  {
+    name: 'Inside Kaduna',
+    url: 'https://insidekaduna.com/',
+    host: 'insidekaduna.com',
+    kind: 'wordpress',
+    image: '/images/projects/insidekaduna.jpg',
+    summary: 'A news site covering politics, infrastructure, technology and business in Kaduna, built on WordPress.',
+  },
+  {
+    name: 'Lagos Today',
+    url: 'https://lagostoday.com.ng/',
+    host: 'lagostoday.com.ng',
+    kind: 'wordpress',
+    image: '/images/projects/lagostoday.jpg',
+    summary: 'A news and opinion site for Lagos with sections for politics, infrastructure, technology and reviews, built on WordPress.',
+  },
+  {
+    name: 'Agriprojects International',
+    url: 'https://agriprojectsinternational.com/',
+    host: 'agriprojectsinternational.com',
+    kind: 'wordpress',
+    image: '/images/projects/agriprojects.jpg',
+    summary: 'An online store for a Nigerian distributor of veterinary biologicals, medicines and livestock equipment, built on WordPress.',
+  },
+  {
+    name: 'XEM Consultants',
+    url: 'https://xemgroup.net/',
+    host: 'xemgroup.net',
+    kind: 'wordpress',
+    image: '/images/projects/xem.jpg',
+    summary: 'The website of a capacity development firm, with event registration for its national summits, built on WordPress.',
+  },
+]

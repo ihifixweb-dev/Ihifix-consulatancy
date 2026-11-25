@@ -1,5 +1,7 @@
 'use server'
 
+import { saveToSheet } from '@/lib/sheets'
+
 export type ApplicationState = {
   status: 'idle' | 'success' | 'error'
   message?: string
@@ -52,9 +54,26 @@ export async function submitApplication(_prev: ApplicationState, formData: FormD
     return { status: 'error', message: 'Please fix the highlighted fields.', errors }
   }
 
-  // TODO: deliver the application and CV to the careers inbox (or an ATS) and send an acknowledgement email
-  // once an email provider is chosen. Until then nothing is stored or sent.
-  console.log('[careers] Application received', { area: data.area, experience: data.experience })
+  const saved = await saveToSheet(
+    'application',
+    {
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      location: data.location,
+      area: data.area,
+      experience: data.experience,
+      link: data.link,
+      note: data.note,
+    },
+    cv instanceof File ? cv : null,
+  )
+  if (!saved.ok && saved.reason === 'failed') {
+    return {
+      status: 'error',
+      message: 'We could not send your application just now. Please try again in a minute, or email info@ihifix.com.',
+    }
+  }
 
   return {
     status: 'success',

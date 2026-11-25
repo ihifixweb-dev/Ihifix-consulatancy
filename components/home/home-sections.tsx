@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight, BadgeCheck, Layers, Quote, ShieldCheck } from 'lucide-react'
-import { caseStudies, industries, partners, process, services, stats, trustedBy, type PartnerLogo } from '@/lib/content'
+import { caseStudies, groupSites, industries, partners, process, services, stats, trustedBy, type PartnerLogo } from '@/lib/content'
 import { CaseCard, ServiceCard } from '@/components/site/cards'
 import { CtaLink, Eyebrow, Rise, SectionHeading } from '@/components/site/primitives'
 
@@ -316,11 +316,17 @@ export function EcosystemBand() {
             <p className="text-2xl font-bold tracking-[-0.03em] text-ink">Part of Ihifix Group</p>
           </div>
           <p className="reveal leading-relaxed text-muted-foreground" style={stagger(1)}>
-            <strong className="font-semibold text-navy">Ihifix Digital Academy</strong> trains the engineers, designers and
+            <a href={groupSites.academy.href} target="_blank" rel="noopener noreferrer" className="font-semibold text-navy underline decoration-primary/40 underline-offset-4 hover:decoration-primary">
+              Ihifix Digital Academy
+            </a>{' '}
+            trains the engineers, designers and
             analysts who join our delivery teams.
           </p>
           <p className="reveal leading-relaxed text-muted-foreground" style={stagger(2)}>
-            <strong className="font-semibold text-navy">Ihifix Innovation Foundation</strong> extends digital access to
+            <a href={groupSites.foundation.href} target="_blank" rel="noopener noreferrer" className="font-semibold text-navy underline decoration-primary/40 underline-offset-4 hover:decoration-primary">
+              Ihifix Innovation Foundation
+            </a>{' '}
+            extends digital access to
             underserved communities across Northern Nigeria.
           </p>
         </div>

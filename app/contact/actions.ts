@@ -1,12 +1,15 @@
 'use server'
 
+import { saveToSheet } from '@/lib/sheets'
+
 export type EnquiryState = {
   status: 'idle' | 'success' | 'error'
   message?: string
   errors?: Partial<Record<string, string>>
 }
 
-const MAX_FILE_BYTES = 10 * 1024 * 1024
+// Vercel rejects request bodies over 4.5 MB, so attachments are capped below that.
+const MAX_FILE_BYTES = 4 * 1024 * 1024
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 export async function submitEnquiry(_prev: EnquiryState, formData: FormData): Promise<EnquiryState> {
@@ -41,14 +44,36 @@ export async function submitEnquiry(_prev: EnquiryState, formData: FormData): Pr
   if (data.type === 'tender' && !data.reference) errors.reference = 'Please add the tender reference number.'
 
   const file = formData.get('attachment')
-  if (file instanceof File && file.size > MAX_FILE_BYTES) errors.attachment = 'Files must be 10 MB or smaller.'
+  if (file instanceof File && file.size > MAX_FILE_BYTES) errors.attachment = 'Files must be 4 MB or smaller.'
 
   if (Object.keys(errors).length > 0) {
     return { status: 'error', message: 'Please fix the highlighted fields.', errors }
   }
 
-  // TODO: route to CRM / BD inbox and send auto-acknowledgement email once providers are chosen.
-  console.log('[v0] Enquiry received', { type: data.type, organisation: data.organisation, services: data.services })
+  const saved = await saveToSheet(
+    'enquiry',
+    {
+      type: data.type,
+      name: data.name,
+      organisation: data.organisation,
+      role: data.role,
+      email: data.email,
+      phone: data.phone,
+      services: data.services.join(', '),
+      budget: data.budget,
+      timeline: data.timeline,
+      reference: data.reference,
+      deadline: data.deadline,
+      brief: data.brief,
+    },
+    file instanceof File ? file : null,
+  )
+  if (!saved.ok && saved.reason === 'failed') {
+    return {
+      status: 'error',
+      message: 'We could not send your enquiry just now. Please try again in a minute, or email info@ihifix.com.',
+    }
+  }
 
   return {
     status: 'success',
